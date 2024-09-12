@@ -4,7 +4,7 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 
 #GENERATE RANDOM NUMBER
 RANDOM_NUMBER(){
-    echo $(($RANDOM%3))
+    echo $(($RANDOM%10))
 }
 
 #SAVE GENERATED NUMBER IN VARIABLE
@@ -36,12 +36,24 @@ fi
 echo "Guess the secret number between 1 and 1000:"
 read USER_GUESS
 
-if [[ $USER_GUESS > $SECRET_NUMBER ]]
-then   
-  echo "It's lower than that, guess again:"
-  read USER_GUESS
+while [[ $USER_GUESS != $SECRET_NUMBER ]]
+do
 
-else
-  echo "Try again" 
-  read USER_GUESS
-fi
+  if [[ $USER_GUESS -gt $SECRET_NUMBER ]]
+  then
+    echo "It's lower than that, guess again:"
+    read USER_GUESS
+
+  elif [[ $USER_GUESS -lt $SECRET_NUMBER ]]
+  then
+    echo "It's higher than that, guess again:"
+    read USER_GUESS
+
+  fi
+
+done
+
+echo "You guessed it in <number_of_guesses> tries. The secret number was $SECRET_NUMBER. Nice job!"
+
+
+
