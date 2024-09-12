@@ -4,7 +4,7 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 
 #GENERATE RANDOM NUMBER
 RANDOM_NUMBER(){
-    echo $(($RANDOM%10))
+    echo $(($RANDOM%10+1))
 }
 
 #SAVE GENERATED NUMBER IN VARIABLE
@@ -36,8 +36,17 @@ fi
 echo "Guess the secret number between 1 and 1000:"
 read USER_GUESS
 
+
+
+
 while [[ $USER_GUESS != $SECRET_NUMBER ]]
 do
+
+if ! [[ $USER_GUESS =~ ^[0-9]+$ ]]
+then 
+  echo "That is not an integer, guess again:"
+  read USER_GUESS
+else
 
   if [[ $USER_GUESS -gt $SECRET_NUMBER ]]
   then
@@ -50,6 +59,8 @@ do
     read USER_GUESS
 
   fi
+
+fi  
 
 done
 
