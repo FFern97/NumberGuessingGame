@@ -20,9 +20,8 @@ read USERNAME
 #SAVE USERNAME IN TABLE users:
 INSERTED=$($PSQL "INSERT INTO users (name) VALUES ('$USERNAME')");
 
-#SELECT games_played AND best_game FROM users
-GAMES_PLAYED=$($PSQL "SELECT games_played FROM users")
-BEST_GAME=$($PSQL "SELECT best_game FROM users")
+GAMES_PLAYED=$($PSQL "SELECT COUNT(games_played) FROM users")
+BEST_GAME=$($PSQL "SELECT COUNT(MIN(best_game)) FROM users")
 
 USER_EXIST=$($PSQL "SELECT name FROM users WHERE name = '$USERNAME' ");
 
@@ -34,5 +33,6 @@ then
 else
     echo "Welcome, $USERNAME! It looks like this is your first time here."
 
-fi
+fi  
+
 
