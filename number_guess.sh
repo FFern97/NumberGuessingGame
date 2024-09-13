@@ -26,7 +26,7 @@ then
 else
     GAMES_PLAYED=$($PSQL "SELECT games_played FROM users WHERE name = '$USERNAME'")
     BEST_GAME=$($PSQL "SELECT best_game FROM users WHERE name= '$USERNAME'")
-    echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $COUNT_TRIES guesses."
+    echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 
 fi
 
@@ -66,6 +66,11 @@ done
 
 UPDATE_GAMES=$($PSQL "UPDATE users SET games_played = games_played + 1 WHERE name = '$USERNAME' ")
 #UPDATE_TRIES=$($PSQL "UPDATE users SET best_game = best_game + 1 WHERE name = '$USERNAME' ")
+
+if [[ $COUNT_TRIES -lt $BEST_GAME || $BEST_GAME -eq 0 ]]
+then
+    UPDATE_BEST=$($PSQL "UPDATE users SET best_game = $COUNT_TRIES WHERE name = '$USERNAME'")
+fi
 
 echo "You guessed it in $COUNT_TRIES tries. The secret number was $SECRET_NUMBER. Nice job!";
  
