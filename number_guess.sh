@@ -4,7 +4,7 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 
 #GENERATE RANDOM NUMBER
 RANDOM_NUMBER(){
-    echo $(($RANDOM%10+1))
+    echo $(($RANDOM%1000+1))
 }
 
 #SAVE GENERATED NUMBER IN VARIABLE
@@ -14,8 +14,14 @@ SECRET_NUMBER=$(RANDOM_NUMBER)
 echo "Enter your username:"
 read USERNAME
 
+while [[ -z $USERNAME ]]; do
+    echo "Username cannot be empty. Please enter your username:"
+    read USERNAME
+done
+
+
 #CHECK IF USER EXISTS 
-USER_EXIST=$($PSQL "SELECT name FROM users WHERE name = '$USERNAME' ");
+USER_EXIST=$($PSQL "SELECT TRIM(name) FROM users WHERE name = '$USERNAME' ");
 
 #FIND OUT IF USERNAME EXISTs
 if [[ -z $USER_EXIST ]]
@@ -27,7 +33,6 @@ else
     GAMES_PLAYED=$($PSQL "SELECT games_played FROM users WHERE name = '$USERNAME'")
     BEST_GAME=$($PSQL "SELECT best_game FROM users WHERE name= '$USERNAME'")
     echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
-
 fi
 
 
@@ -73,7 +78,6 @@ then
 fi
 
 echo "You guessed it in $COUNT_TRIES tries. The secret number was $SECRET_NUMBER. Nice job!";
- 
 
 
 
